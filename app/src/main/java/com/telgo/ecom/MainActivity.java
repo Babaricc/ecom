@@ -1,4 +1,4 @@
-package com.example.ecomm_app;
+package com.telgo.ecom;
 
 import androidx.appcompat.app.AppCompatActivity;
 

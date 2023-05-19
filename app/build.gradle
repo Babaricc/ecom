@@ -3,12 +3,12 @@ plugins {
 }
 
 android {
-    namespace 'com.example.ecomm_app'
+    namespace 'com.telgo.ecom'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.ecomm_app"
-        minSdk 24
+        applicationId "com.telgo.ecom"
+        minSdk 26
         targetSdk 33
         versionCode 1
         versionName "1.0"

@@ -1,1 +1,0 @@
-# ecomm_app_prvt
