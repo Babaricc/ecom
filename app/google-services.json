@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "696190591574",
+    "project_id": "ecom-c673c",
+    "storage_bucket": "ecom-c673c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:696190591574:android:32a9fb3edf23aed7e6d1f7",
+        "android_client_info": {
+          "package_name": "com.telgo.ecom"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "696190591574-92i8jkf6j5c3po9v4o6t8up96jnotp1n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.telgo.ecom",
+            "certificate_hash": "a55c8effdd1f420393265691c21541cc6bf7aa6e"
+          }
+        },
+        {
+          "client_id": "696190591574-f5i13hspmhhkipi08ono27i0mucs356h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTDcqmp-8ivPDNokRMvqOoOhq-GqzTeLk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "696190591574-f5i13hspmhhkipi08ono27i0mucs356h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

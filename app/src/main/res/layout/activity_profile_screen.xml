@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="30sp"
+        tools:context=".ProfileScreen">
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="150sp"
+            android:layout_height="150sp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:foregroundGravity="center"
+            android:textAlignment="center"
+            app:cardCornerRadius="100sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+
+                android:id="@+id/user_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:onClick="browseImage"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                android:background="@drawable/user_dummy"
+                />
+        </androidx.cardview.widget.CardView>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8sp"
+            android:layout_marginTop="10sp"
+            android:text="Name" />
+
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="35sp"
+            android:layout_marginTop="10sp"
+            android:background="@drawable/rounded_textview1"
+            android:drawableStart="@drawable/baseline_person_24"
+            android:drawablePadding="5sp"
+            android:hint="@string/enter_your_name"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8sp"
+            android:layout_marginTop="10sp"
+            android:text="Email Address" />
+
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="35sp"
+            android:layout_marginTop="10sp"
+            android:background="@drawable/rounded_textview1"
+            android:drawableStart="@drawable/baseline_email_24"
+            android:drawablePadding="5sp"
+            android:hint="Email"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8sp"
+            android:layout_marginTop="10sp"
+            android:text="User Name" />
+
+        <EditText
+            android:id="@+id/userName"
+            android:layout_width="match_parent"
+            android:layout_height="35sp"
+            android:layout_marginTop="10sp"
+            android:background="@drawable/rounded_textview1"
+            android:drawableStart="@drawable/baseline_person_24"
+            android:drawablePadding="5sp"
+            android:hint="User Name"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8sp"
+            android:layout_marginTop="10sp"
+            android:text="Password" />
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="35sp"
+            android:layout_marginTop="10sp"
+            android:background="@drawable/rounded_textview1"
+            android:drawableStart="@drawable/baseline_password_24"
+            android:drawablePadding="5sp"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8sp"
+            android:layout_marginTop="10sp"
+            android:text="Contact Number" />
+
+        <EditText
+            android:id="@+id/contact"
+            android:layout_width="match_parent"
+            android:layout_height="35sp"
+            android:layout_marginTop="10sp"
+            android:background="@drawable/rounded_textview1"
+            android:drawableStart="@drawable/baseline_local_phone_24"
+            android:drawablePadding="5sp"
+            android:hint="Contact Number"
+            android:inputType="number"
+            android:maxLength="12"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8sp"
+            android:layout_marginTop="10sp"
+            android:text="Addrss" />
+
+        <EditText
+            android:id="@+id/address"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginTop="10sp"
+            android:background="@drawable/rounded_textarea"
+            android:drawablePadding="5sp"
+            android:gravity="top"
+            android:hint="Address "
+            android:inputType="text|textMultiLine"
+            android:maxLines="10"
+            android:textSize="18sp" />
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15sp"
+            android:background="@drawable/rounded_btn"
+            android:backgroundTint="#FFC107"
+            android:onClick="saveProfile"
+            android:text="Save Profile" />
+
+
+    </LinearLayout>
+
+</ScrollView>
