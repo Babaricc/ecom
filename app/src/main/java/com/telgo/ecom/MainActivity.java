@@ -30,15 +30,15 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent;
 
                     userSession.clearSession();
-                    intent = new Intent(MainActivity.this, HomeScreen.class);
+//                    intent = new Intent(MainActivity.this, HomeScreen.class);
 
-//                    Log.d("session!!", "getContact: " + userSession.getContact());
-//                    Log.d("session", "getEmail: " + userSession.getEmail());
-//                    if (userSession.getUserStatus())
-//                        intent = new Intent(MainActivity.this, ProfileScreen.class);
-//                    else
-////                        intent = new Intent(MainActivity.this, HomeScreen.class);
-//                        intent = new Intent(MainActivity.this, IntroActi.class);
+                    Log.d("session!!", "getContact: " + userSession.getContact());
+                    Log.d("session", "getEmail: " + userSession.getEmail());
+                    if (userSession.getUserStatus())
+                        intent = new Intent(MainActivity.this, ProfileScreen.class);
+                    else
+//                        intent = new Intent(MainActivity.this, HomeScreen.class);
+                        intent = new Intent(MainActivity.this, IntroActi.class);
 ////
                     startActivity(intent);
                     finish();

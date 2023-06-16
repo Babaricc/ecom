@@ -1,11 +1,8 @@
 package com.telgo.ecom.screens;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,16 +13,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.hishd.tinycart.model.Cart;
 import com.hishd.tinycart.model.Item;
 import com.hishd.tinycart.util.TinyCartHelper;
 import com.razorpay.PaymentResultListener;
 import com.telgo.ecom.CustomDialog;
-import com.telgo.ecom.HomeScreen;
 import com.telgo.ecom.MainActivity;
-import com.telgo.ecom.OTP_Screen;
 import com.telgo.ecom.R;
 import com.telgo.ecom.adapters.CartAdapter;
 import com.telgo.ecom.custom.Constants;
@@ -86,57 +79,33 @@ public class Checkout extends AppCompatActivity implements PaymentResultListener
         binding.orderBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Gson gson = new Gson();
-
-                JSONObject dataObj = new JSONObject();
-                JSONArray products = new JSONArray();
-                for (Map.Entry<Item, Integer> item : cart.getAllItemsWithQty().entrySet()) {
-                    Product product = (Product) item.getKey();
-                    products.put(gson.toJson(product));
-                }
 
                 try {
-                    dataObj.put("cust_id", "434325");
-                    dataObj.put("order_date", LocalDateTime.now());
-                    dataObj.put("delivery_date", LocalDateTime.now().plusDays(5));
-                    dataObj.put("amount", binding.totalAmount.getText().toString());
-                    dataObj.put("sales_tax", Constants.SALES_TAX);
-                    dataObj.put("shipping_address", binding.address2.getText().toString());
-                    dataObj.put("status", true);
-                    dataObj.put("transaction_id", 2523523);
-                    dataObj.put("products", products);
 
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
+                    String amount = binding.totalAmount.getText().toString();
+
+                    double payAmount = Math.round(Double.parseDouble(amount) * 100);
+
+                    com.razorpay.Checkout checkout = new com.razorpay.Checkout();
+                    checkout.setKeyID(Constants.PAYMENT_GATEWAY_KEY);
+                    checkout.setImage(R.mipmap.ic_launcher);
+
+                    JSONObject object = new JSONObject();
+
+
+                    object.put("name", "Karachi Mart");
+                    object.put("description", "Shopping Payment");
+                    object.put("theme.color", "");
+                    object.put("currency", "PKR");
+                    object.put("amount", payAmount);
+                    object.put("prefill.contact", "923403961930");
+                    object.put("prefill.email", "hussainbabarkh@gmail.com");
+                    checkout.open(Checkout.this, object);
+
+
+                } catch (Exception ex) {
+                    Log.d("exception!!", "onClick: " + ex);
                 }
-
-                Log.d("obj!", "2: " + dataObj);
-                Log.d("obj!", "3: " + dataObj.toString());
-
-                return;
-
-
-//                double amount = Math.round(Double.parseDouble(binding.totalAmount.getText().toString()) * 100);
-//                com.razorpay.Checkout checkout = new com.razorpay.Checkout();
-//                checkout.setKeyID("rzp_test_adbF9UpkM034uy");
-//                checkout.setImage(R.mipmap.ic_launcher);
-//
-//
-//                JSONObject object = new JSONObject();
-//                try {
-//                    object.put("name", userSession.getName().isEmpty() ? "User Name" : userSession.getName());
-//                    object.put("description", "Shopping Payment");
-//                    object.put("theme.color", "");
-//                    object.put("currency", "PKR");
-//                    object.put("amount", amount);
-//                    object.put("prefill.contact", "03403961930");
-//                    object.put("prefill.email", "husainbabarkh@gmail.com");
-//                    checkout.open(Checkout.this, object);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//
-//                }
-
             }
         });
 
@@ -162,77 +131,95 @@ public class Checkout extends AppCompatActivity implements PaymentResultListener
 
     @Override
     public void onPaymentSuccess(String transaction_id) {
-        Log.d("obj!", "1: " + 3434);
+        RequestQueue queue = Volley.newRequestQueue(Checkout.this);
+
+        try {
+            JSONObject orderData = new JSONObject();
+            orderData.put("user_id", "434343"); // WILL BE CHANGED
+            orderData.put("order_date", LocalDateTime.now());
+            orderData.put("delivery_date", LocalDateTime.now().plusDays(5));
+            orderData.put("amount", binding.totalAmount.getText().toString());
+            orderData.put("sales_tax", 7.5); //// WILL BE CHANGED binding.salesTaxAmount.getText()
+            orderData.put("shipping_address", binding.address2.getText());
+            orderData.put("status", true);
+            orderData.put("transaction_id", transaction_id);
+
+            JSONArray products = new JSONArray();
+
+            for (Map.Entry<Item, Integer> item : cart.getAllItemsWithQty().entrySet()) {
+                Product product = (Product) item.getKey();
+                JSONObject prodObj = new JSONObject();
+
+                prodObj.put("id", product.getId());
+                prodObj.put("quantity", product.getQuantity());
+                prodObj.put("price", product.getPrice());
+                prodObj.put("discount", product.getDiscount());
+
+                products.put(prodObj);
+            }
+
+            orderData.put("products", products);
+
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, Constants.ORDRES_URL_CREATE, orderData, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+
+                    try {
+                        if (response.getBoolean("status")) {
+                            CustomDialog customDialog = customDialog("Payment Transaction", "Payment Transaction Completed + " + transaction_id, R.raw.success);
+                            customDialog.show();
+                            customDialog.yeBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    customDialog.dismiss();
+                                }
+                            });
+                        }
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                }
+            }, new Response.ErrorListener() {
+
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    CustomDialog customDialog = customDialog("Payment Transaction", "Payment Transaction Failed " + error, R.raw.failure);
+                    customDialog.show();
+                    customDialog.yeBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            customDialog.dismiss();
+                        }
+                    });
+                }
+            });
+
+            queue.add(jsonObjectRequest);
 
 
-//        try {
-//            RequestQueue queue = Volley.newRequestQueue(Checkout.this);
-//
-//            JSONObject dataObj = new JSONObject();
-//            JSONObject products;
-//            products = (JSONObject) cart.getItemNames();
-//
-//
-//            dataObj.put("cust_id","434325");
-//            dataObj.put("order_date",LocalDateTime.now());
-//            dataObj.put("delivery_date", LocalDateTime.now().plusDays(5));
-//            dataObj.put("amount",binding.totalAmount.getText().toString());
-//            dataObj.put("sales_tax",Constants.SALES_TAX);
-//            dataObj.put("shipping_address",binding.address2);
-//            dataObj.put("status",true);
-//            dataObj.put("transaction_id",transaction_id);
-//            dataObj.put("products",products);
-//
-//            Log.d("obj!", "2: " + dataObj);
-//            Log.d("obj!", "3: " + dataObj.toString());
-//
-//            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, Constants.ORDRES_URL +"/" +transaction_id, dataObj, new Response.Listener<JSONObject>() {
-//                @Override
-//                public void onResponse(JSONObject response) {
-//                    CustomDialog dialog = new CustomDialog(Checkout.this, "Payment Transaction", "Transaction successfully completed", R.raw.success, false);
-//                    dialog.show();
-//                    dialog.yeBtn.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            dialog.dismiss();
-//                        }
-//                    });
-//                }
-//            }, new Response.ErrorListener() {
-//                @Override
-//                public void onErrorResponse(VolleyError error) {
-//                    Log.d("obj!!", "5: "+ error);
-//                    System.out.println("------------------------");
-//                    error.printStackTrace();
-//                }
-//            });
-//
-//            queue.add(jsonObjectRequest);
-//
-//        } catch (JSONException e) {
-//            Log.d("obj!", "4: " + e);
-//            CustomDialog dialog = new CustomDialog(Checkout.this, "Payment Transaction", "Transaction successfully completed", R.raw.success, false);
-//            dialog.show();
-//            dialog.yeBtn.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    dialog.dismiss();
-//                }
-//            });
-//        }
-
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
     @Override
-    public void onPaymentError(int i, String s) {
-        CustomDialog dialog = new CustomDialog(Checkout.this, "Payment Transaction", s, R.raw.success, false);
-        dialog.show();
-        dialog.yeBtn.setOnClickListener(new View.OnClickListener() {
+    public void onPaymentError(int i, String error) {
+        CustomDialog customDialog = customDialog("Payment Transaction", "Payment Transaction Failed " + error, R.raw.failure);
+        customDialog.show();
+        customDialog.yeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.dismiss();
+                customDialog.dismiss();
             }
         });
+
     }
+
+    public CustomDialog customDialog(String title, String message, int image) {
+        CustomDialog customDialog = new CustomDialog(Checkout.this, title, message, image, false);
+        return customDialog;
+    }
+
 }

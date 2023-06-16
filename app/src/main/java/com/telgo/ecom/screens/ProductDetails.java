@@ -104,7 +104,6 @@ public class ProductDetails extends AppCompatActivity {
             Product product = (Product) p;
             if (product.getId() == id) return product;
         }
-
         return null;
     }
 
@@ -131,7 +130,6 @@ public class ProductDetails extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
 
             case R.id.action_cart: {
